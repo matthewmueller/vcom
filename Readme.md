@@ -1,7 +1,7 @@
 
 # vcom
 
-  Everything you need to create virtual [Preact](https://github.com/developit/preact) components with CSS, HTML, and JS.
+  Everything you need to create virtual [Preact](https://github.com/developit/preact) Components with CSS, HTML, and JS.
 
 ## Example
 
@@ -27,6 +27,12 @@ const App = ({ name }) => (
 )
 
 render(App({ name: 'Matt' }), document.body)
+```
+
+## Installation
+
+```bash
+npm install vcom
 ```
 
 ## License
