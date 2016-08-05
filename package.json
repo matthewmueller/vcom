@@ -1,0 +1,41 @@
+{
+  "name": "vcom",
+  "version": "1.0.0",
+  "description": "Everything you need to create virtual components with CSS, HTML, and JS",
+  "keywords": [
+    "preact",
+    "virtual",
+    "dom",
+    "css",
+    "js"
+  ],
+  "author": "Matthew Mueller <mattmuelle@gmail.com>",
+  "repository": "MatthewMueller/vcom",
+  "dependencies": {
+    "afro": "2.0.3",
+    "sun": "1.0.1"
+  },
+  "devDependencies": {
+    "beefy": "2.1.8",
+    "mocha": "3.0.1",
+    "preact": "5.6.0",
+    "preact-render-to-string": "3.0.5",
+    "rollup": "^0.34.3",
+    "rollup-plugin-buble": "^0.12.1",
+    "rollup-plugin-commonjs": "^3.3.1",
+    "rollup-plugin-json": "2.0.1",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "uglifyjs": "2.4.10"
+  },
+  "main": "dist/vcom.js",
+  "minified:main": "dist/vcom.min.js",
+  "scripts": {
+    "build": "npm run -s transpile && npm run -s minify",
+    "transpile": "rollup -c rollup.config.js -f umd -n $npm_package_name -m -o $npm_package_main index.js",
+    "minify": "uglifyjs $npm_package_main -cm -o $npm_package_minified_main -p relative --in-source-map ${npm_package_main}.map --source-map ${npm_package_minified_main}.map",
+    "example:browser": "beefy examples/client.js --live --open",
+    "example:server": "node examples/server.js",
+    "test": "mocha --reporter spec",
+    "prepublish": "npm run build"
+  }
+}
