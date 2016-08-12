@@ -1,6 +1,6 @@
 {
   "name": "vcom",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Everything you need to create virtual components with CSS, HTML, and JS",
   "keywords": [
     "preact",
