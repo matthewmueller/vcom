@@ -16,6 +16,14 @@ describe('vcom', function() {
     assert.ok(vcom.CSS)
   })
 
+  it('should check that css is a function', function() {
+    let css = vcom.CSS(`
+      .landing { background: blue; }
+    `)
+
+    assert.equal(css(), '._1nxhvta { background: blue; }')
+  })
+
   it('should ensure that the HTML attributes are attached', function() {
     assert.ok(vcom.div)
     assert.ok(vcom.span)
