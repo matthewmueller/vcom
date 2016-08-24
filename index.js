@@ -24,3 +24,34 @@ for (var fn in sun) {
  */
 
 vcom.CSS = afro
+
+/**
+ * Styles
+ */
+
+vcom.styles = styles
+
+/**
+ * Render the classnames
+ */
+
+function styles (vnode, css) {
+  walk(vnode, function (node) {
+    if (!node.attributes || !node.attributes.class) return
+    node.attributes.class = css(node.attributes.class)
+  })
+  return vnode
+}
+
+/**
+ * Walk the vnode tree
+ */
+
+function walk (vnode, fn) {
+  if (!vnode.children) return fn(vnode)
+  let len = vnode.children.length
+  for (let i = 0; i < len; i++) {
+    walk(vnode.children[i], fn)
+  }
+  fn(vnode)
+}
