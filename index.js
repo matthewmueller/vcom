@@ -29,6 +29,10 @@ vcom.CSS = afro
  * Styles
  */
 
+function Style ({ children }) {
+
+}
+
 vcom.styles = styles
 
 /**
