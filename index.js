@@ -2,49 +2,119 @@
  * Module Dependencies
  */
 
-var afro = require('afro')
-var sun = require('sun')
+const Socrates = require('socrates')
+const Stylesheet = require('afro')
+const Effects = require('alley')
+const preact = require('preact')
+const sun = require('sun')
+
+/**
+ * Defer with fallback
+ */
+
+let resolved = typeof Promise !=='undefined' && Promise.resolve()
+const defer = resolved ? (f => { resolved.then(f) }) : setTimeout
 
 /**
  * Initialize the vcom object
  */
 
-var vcom = module.exports = {}
+const vcom = module.exports = {}
 
 /**
- * Attach
+ * DOM
  */
 
-for (var fn in sun) {
-  vcom[fn] = sun[fn]
-}
+vcom.html = sun
 
 /**
  * Attach CSS
  */
 
-vcom.CSS = afro
+vcom.stylesheet = Stylesheet
 
 /**
- * Styles
+ * Store
  */
 
-function Style ({ children }) {
+vcom.store = Socrates
 
+/**
+ * Effects
+ */
+
+vcom.effects = Effects
+
+/**
+ * Render
+ */
+
+vcom.render = Render
+
+/**
+ * Render
+ */
+
+function Render (renderable, parent, { send, store, css }) {
+  let transform = Transform({ css, send })
+  let root = null
+
+  function render () {
+    let vdom = transform(renderable(store()), { css, send })
+    root = preact.render(transform(vdom), parent, root)
+    return root
+  }
+
+  // subscribe to updates
+  store.subscribe(() => defer(render))
+
+  return render()
 }
 
-vcom.styles = styles
+/**
+ * Transform vnodes
+ */
+
+function Transform ({ css, send }) {
+  let action = Actions(send)
+  let styles = Styles(css)
+  return function transform (vnode) {
+    return walk(vnode, node => {
+      if (css) styles(node)
+      if (send) action(node)
+      return node
+    })
+  }
+}
 
 /**
  * Render the classnames
  */
 
-function styles (vnode, css) {
-  walk(vnode, function (node) {
-    if (!node.attributes || !node.attributes.class) return
-    node.attributes.class = css(node.attributes.class)
-  })
-  return vnode
+function Styles (css) {
+  return function styles (node) {
+    let attrs = node.attributes
+    if (!attrs || !attrs.class) return node
+    attrs.class = css(attrs.class) || attrs.class
+    return node
+  }
+}
+
+/**
+ * Actions
+ */
+
+function Actions (send) {
+  return function action (node) {
+    let attrs = node.attributes
+    if (!attrs) return node
+    for (let attr in attrs) {
+      if (typeof attrs[attr] !== 'function') continue
+      let fn = attrs[attr]
+      attrs[attr] = (e) => fn(e, send)
+    }
+    return node
+  }
 }
 
 /**
@@ -52,10 +122,8 @@ function styles (vnode, css) {
  */
 
 function walk (vnode, fn) {
-  if (!vnode.children) return fn(vnode)
-  let len = vnode.children.length
-  for (let i = 0; i < len; i++) {
-    walk(vnode.children[i], fn)
-  }
   fn(vnode)
+  if (!vnode.children) return vnode
+  vnode.children.map(child => walk(child, fn))
+  return vnode
 }

@@ -1,7 +1,7 @@
 
 # vcom
 
-  Everything you need to create virtual [Preact](https://github.com/developit/preact) Components with CSS, HTML, and JS.
+  Everything you need to create functional, virtual [Preact](https://github.com/developit/preact) Components with CSS, HTML, and JS.
 
 ## Example
 

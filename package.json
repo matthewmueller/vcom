@@ -13,10 +13,10 @@
   "repository": "MatthewMueller/vcom",
   "dependencies": {
     "afro": "2.2.1",
-    "socrates": "2.0.0",
-    "sun": "1.0.3",
-    "tiny-store": "1.0.0",
-    "updeep": "0.16.1"
+    "alley": "1.0.0",
+    "preact": "5.7.0",
+    "socrates": "3.0.1",
+    "sun": "1.0.4"
   },
   "devDependencies": {
     "beefy": "2.1.8",
