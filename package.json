@@ -12,7 +12,7 @@
   "author": "Matthew Mueller <mattmuelle@gmail.com>",
   "repository": "MatthewMueller/vcom",
   "dependencies": {
-    "afro": "2.2.1",
+    "afro": "2.2.2",
     "alley": "1.0.0",
     "preact": "5.7.0",
     "socrates": "3.0.1",

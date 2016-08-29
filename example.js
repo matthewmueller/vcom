@@ -12,17 +12,10 @@ const store = vcom.store({
   },
   todos: {
     create (state, action) {
+      console.log(state, action)
       return state.concat(action)
     }
   }
-})
-
-store('boot', {
-  todos: [
-    {
-      title: 'hi world!'
-    }
-  ]
 })
 
 const { use, send } = vcom.effects()
@@ -34,8 +27,9 @@ use(function (before, next) {
   })
 })
 
-use('state:todo:create', function ({ payload }, next) {
-  store('todos:create', payload)
+use('state', function (action, next) {
+  let suffix = action.type.split(':').slice(1).join(':')
+  store(suffix, action.payload)
   return next()
 })
 
@@ -67,18 +61,19 @@ const css = vcom.stylesheet(`
 `)
 
 const App = (props) => {
-  let className = props.todos.length % 2 ? 'inner' : 'more'
+  let todos = props.todos || []
+  let className = todos.length % 2 ? 'inner' : 'more'
   return div.class('App')(
     style.type('text/css')(String(css)),
     h2.class('header')('hi there!'),
     button.onClick(onclick)('Click Me!'),
-    props.todos.map(todo => p.class(className).style('background: orange;')(todo.title))
+    todos.map(todo => p.class(className).style('background: orange;')(todo.title))
   )
 }
 
 function onclick (e, send) {
   send({
-    type: 'state:todo:create',
+    type: 'state:todos:create',
     payload: {
       title: 'hi world'
     }
@@ -94,3 +89,11 @@ if (typeof document !== 'undefined') {
     css: css
   })
 }
+
+send('state:boot', {
+  todos: [
+    {
+      title: 'hi world!'
+    }
+  ]
+})
