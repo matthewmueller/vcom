@@ -12,12 +12,12 @@ let vcom = require('..')
  */
 
 describe('vcom', function() {
-  it('should ensure that CSS is preset', function() {
-    assert.ok(vcom.CSS)
+  it('should ensure that stylesheet is preset', function() {
+    assert.ok(vcom.stylesheet)
   })
 
   it('should check that css is a function', function() {
-    let css = vcom.CSS(`
+    let css = vcom.stylesheet(`
       .landing { background: blue; }
     `)
 
@@ -25,9 +25,9 @@ describe('vcom', function() {
   })
 
   it('should ensure that the HTML attributes are attached', function() {
-    assert.ok(vcom.div)
-    assert.ok(vcom.span)
-    assert.ok(vcom.h1)
-    assert.ok(vcom.a)
+    assert.ok(vcom.html.div)
+    assert.ok(vcom.html.span)
+    assert.ok(vcom.html.h1)
+    assert.ok(vcom.html.a)
   })
 })
