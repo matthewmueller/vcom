@@ -60,4 +60,26 @@ describe('vcom', function () {
       assert.equal(el.className, '_im3wl1 _1nxhvta')
     })
   })
+
+  describe('send', function () {
+    it('should pass send in', function (done) {
+      let { send, use } = vcom.effects()
+
+      use(function (payload, next) {
+        assert.deepEqual(payload, {
+          type: 'hi',
+          payload: {}
+        })
+        return done()
+      })
+
+      let button = vcom.html.button.onClick(onClick)('hi')
+      vcom.render(button, document.body, { send })
+      function onClick (e, send) {
+        assert.equal(e.type, 'click')
+        send('hi')
+      }
+      document.querySelector('button').click()
+    })
+  })
 })
