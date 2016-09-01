@@ -2,8 +2,8 @@
  * Module Dependencies
  */
 
+let vcom = require('../index.js')
 let assert = require('assert')
-let vcom = require('..')
 
 /**
  * Tests
@@ -11,12 +11,12 @@ let vcom = require('..')
  * - See sun and afro's tests for a more comprehensive suite
  */
 
-describe('vcom', function() {
-  it('should ensure that stylesheet is preset', function() {
+describe('vcom', function () {
+  it('should ensure that stylesheet is preset', function () {
     assert.ok(vcom.stylesheet)
   })
 
-  it('should check that css is a function', function() {
+  it('should check that css is a function', function () {
     let css = vcom.stylesheet(`
       .landing { background: blue; }
     `)
@@ -24,10 +24,40 @@ describe('vcom', function() {
     assert.equal(css(), '._1nxhvta { background: blue; }')
   })
 
-  it('should ensure that the HTML attributes are attached', function() {
+  it('should ensure that the HTML attributes are attached', function () {
     assert.ok(vcom.html.div)
     assert.ok(vcom.html.span)
     assert.ok(vcom.html.h1)
     assert.ok(vcom.html.a)
+  })
+
+  describe('CSS', function () {
+    it('should support passing a function in', function () {
+      let css = vcom.stylesheet(`
+        .theme { color: red; }
+        .landing { background: blue; }
+      `)
+
+      let a = vcom.html.a.class('theme landing')('hi')
+      vcom.render(a, document.body, { css })
+      let el = document.querySelector('a')
+      assert.equal(el.className, '_im3wl1 _1nxhvta')
+    })
+
+    it('should support passing an object in', function () {
+      let css = vcom.stylesheet(`
+        .theme { color: red; }
+        .landing { background: blue; }
+      `)
+
+      let obj = {
+        landing: css('theme landing')
+      }
+
+      let a = vcom.html.a.class('landing')('hi')
+      vcom.render(a, document.body, { css: obj })
+      let el = document.querySelector('a')
+      assert.equal(el.className, '_im3wl1 _1nxhvta')
+    })
   })
 })

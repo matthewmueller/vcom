@@ -12,8 +12,8 @@ const sun = require('sun')
  * Defer with fallback
  */
 
-let resolved = typeof Promise !=='undefined' && Promise.resolve()
-const defer = resolved ? (f => { resolved.then(f) }) : setTimeout
+let resolved = typeof Promise !== 'undefined' && Promise.resolve()
+const defer = resolved ? f => { resolved.then(f) } : setTimeout
 
 /**
  * Initialize the vcom object
@@ -56,17 +56,24 @@ vcom.render = Render
  */
 
 function Render (renderable, parent, { send, store, css }) {
-  let transform = Transform({ css, send })
+  let styles = typeof css === 'object' ? (key) => css[key] : css
+  let transform = Transform({ css: styles, send })
   let root = null
 
   function render () {
-    let vdom = transform(renderable(store()), { css, send })
-    root = preact.render(transform(vdom), parent, root)
+    let state = typeof store === 'function' ? store() : store
+    let vdom = typeof renderable === 'function'
+      ? transform(renderable(state))
+      : transform(renderable)
+
+    root = preact.render(vdom, parent, root)
     return root
   }
 
   // subscribe to updates
-  store.subscribe(() => defer(render))
+  if (store && typeof store === 'function') {
+    store.subscribe(() => defer(render))
+  }
 
   return render()
 }

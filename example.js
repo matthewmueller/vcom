@@ -38,8 +38,7 @@ const {
   style,
   div,
   h2,
-  p,
-  component
+  p
 } = vcom.html
 
 const css = vcom.stylesheet(`
