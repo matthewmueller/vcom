@@ -129,6 +129,7 @@ function Actions (send) {
  */
 
 function walk (vnode, fn) {
+  if (!vnode) return vnode
   fn(vnode)
   if (!vnode.children) return vnode
   vnode.children.map(child => walk(child, fn))
