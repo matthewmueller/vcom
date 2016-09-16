@@ -63,9 +63,9 @@ describe('vcom', function () {
 
   describe('send', function () {
     it('should pass send in', function (done) {
-      let { send, use } = vcom.Effects()
+      let { send, on } = vcom.Effects()
 
-      use(function (payload, next) {
+      on(function (payload, next) {
         assert.deepEqual(payload, {
           type: 'hi',
           payload: {}
@@ -73,8 +73,8 @@ describe('vcom', function () {
         return done()
       })
 
-      let button = vcom.html.button.onClick(onClick)('hi')
-      vcom.render(button, document.body, { send })
+      let button = vcom.HTML.button.onClick(onClick)('hi')
+      vcom.render(button, document.body, { effects: { send } })
       function onClick (e, send) {
         assert.equal(e.type, 'click')
         send('hi')

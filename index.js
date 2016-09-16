@@ -49,15 +49,15 @@ vcom.Effects = Effects
  * Render
  */
 
-vcom.Render = Render
+vcom.render = Render
 
 /**
  * Render
  */
 
-function Render (renderable, parent, { send, store, css }) {
+function Render (renderable, parent, { effects, store, css }) {
   let styles = typeof css === 'object' ? (key) => css[key] : css
-  let transform = Transform({ css: styles, send })
+  let transform = Transform({ css: styles, effects })
   let root = null
 
   function render () {
@@ -82,13 +82,13 @@ function Render (renderable, parent, { send, store, css }) {
  * Transform vnodes
  */
 
-function Transform ({ css, send }) {
-  let action = Actions(send)
+function Transform ({ css, effects }) {
+  let actions = Actions(effects)
   let styles = Styles(css)
   return function transform (vnode) {
     return walk(vnode, node => {
       if (css) styles(node)
-      if (send) action(node)
+      if (effects) actions(node)
       return node
     })
   }
@@ -111,14 +111,14 @@ function Styles (css) {
  * Actions
  */
 
-function Actions (send) {
-  return function action (node) {
+function Actions (effects) {
+  return function actions (node) {
     let attrs = node.attributes
     if (!attrs) return node
     for (let attr in attrs) {
       if (typeof attrs[attr] !== 'function') continue
       let fn = attrs[attr]
-      attrs[attr] = (e) => fn(e, send)
+      attrs[attr] = (e) => fn(e, effects.send)
     }
     return node
   }
