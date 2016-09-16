@@ -31,7 +31,7 @@ vcom.HTML = sun
  * Attach CSS
  */
 
-vcom.Stylesheet = Stylesheet
+vcom.CSS = Stylesheet
 
 /**
  * Store

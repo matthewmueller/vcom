@@ -13,11 +13,11 @@ let assert = require('assert')
 
 describe('vcom', function () {
   it('should ensure that stylesheet is preset', function () {
-    assert.ok(vcom.Stylesheet)
+    assert.ok(vcom.CSS)
   })
 
   it('should check that css is a function', function () {
-    let css = vcom.Stylesheet(`
+    let css = vcom.CSS(`
       .landing { background: blue; }
     `)
 
@@ -33,7 +33,7 @@ describe('vcom', function () {
 
   describe('CSS', function () {
     it('should support passing a function in', function () {
-      let css = vcom.Stylesheet(`
+      let css = vcom.CSS(`
         .theme { color: red; }
         .landing { background: blue; }
       `)
@@ -45,7 +45,7 @@ describe('vcom', function () {
     })
 
     it('should support passing an object in', function () {
-      let css = vcom.Stylesheet(`
+      let css = vcom.CSS(`
         .theme { color: red; }
         .landing { background: blue; }
       `)
@@ -68,7 +68,7 @@ describe('vcom', function () {
       on(function (payload, next) {
         assert.deepEqual(payload, {
           type: 'hi',
-          payload: {}
+          payload: null
         })
         return done()
       })
