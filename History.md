@@ -1,4 +1,10 @@
 
+3.0.1 / 2016-09-16
+==================
+
+  * pass in effects directly instead of send
+  * rename Render to render
+
 3.0.0 / 2016-09-16
 ==================
 
