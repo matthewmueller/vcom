@@ -25,31 +25,31 @@ const vcom = module.exports = {}
  * DOM
  */
 
-vcom.html = sun
+vcom.HTML = sun
 
 /**
  * Attach CSS
  */
 
-vcom.stylesheet = Stylesheet
+vcom.Stylesheet = Stylesheet
 
 /**
  * Store
  */
 
-vcom.store = Socrates
+vcom.Store = Socrates
 
 /**
  * Effects
  */
 
-vcom.effects = Effects
+vcom.Effects = Effects
 
 /**
  * Render
  */
 
-vcom.render = Render
+vcom.Render = Render
 
 /**
  * Render

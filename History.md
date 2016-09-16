@@ -1,4 +1,11 @@
 
+3.0.0 / 2016-09-16
+==================
+
+  * Capitalize all the exports
+  * New API for alley
+  * Socrates now gets a "set" action
+
 2.0.9 / 2016-09-16
 ==================
 

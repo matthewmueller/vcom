@@ -1,6 +1,6 @@
 {
   "name": "vcom",
-  "version": "2.0.9",
+  "version": "3.0.0",
   "description": "Everything you need to create virtual components with CSS, HTML, and JS",
   "keywords": [
     "preact",
@@ -13,9 +13,9 @@
   "repository": "MatthewMueller/vcom",
   "dependencies": {
     "afro": "2.2.5",
-    "alley": "1.0.1",
+    "alley": "2.0.0",
     "preact": "6.0.2",
-    "socrates": "3.0.2",
+    "socrates": "3.0.3",
     "sun": "1.0.6"
   },
   "devDependencies": {

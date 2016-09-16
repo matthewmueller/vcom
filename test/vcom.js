@@ -13,11 +13,11 @@ let assert = require('assert')
 
 describe('vcom', function () {
   it('should ensure that stylesheet is preset', function () {
-    assert.ok(vcom.stylesheet)
+    assert.ok(vcom.Stylesheet)
   })
 
   it('should check that css is a function', function () {
-    let css = vcom.stylesheet(`
+    let css = vcom.Stylesheet(`
       .landing { background: blue; }
     `)
 
@@ -25,27 +25,27 @@ describe('vcom', function () {
   })
 
   it('should ensure that the HTML attributes are attached', function () {
-    assert.ok(vcom.html.div)
-    assert.ok(vcom.html.span)
-    assert.ok(vcom.html.h1)
-    assert.ok(vcom.html.a)
+    assert.ok(vcom.HTML.div)
+    assert.ok(vcom.HTML.span)
+    assert.ok(vcom.HTML.h1)
+    assert.ok(vcom.HTML.a)
   })
 
   describe('CSS', function () {
     it('should support passing a function in', function () {
-      let css = vcom.stylesheet(`
+      let css = vcom.Stylesheet(`
         .theme { color: red; }
         .landing { background: blue; }
       `)
 
-      let a = vcom.html.a.class('theme landing')('hi')
+      let a = vcom.HTML.a.class('theme landing')('hi')
       vcom.render(a, document.body, { css })
       let el = document.querySelector('a')
       assert.equal(el.className, '_im3wl1 _1nxhvta')
     })
 
     it('should support passing an object in', function () {
-      let css = vcom.stylesheet(`
+      let css = vcom.Stylesheet(`
         .theme { color: red; }
         .landing { background: blue; }
       `)
@@ -54,7 +54,7 @@ describe('vcom', function () {
         landing: css('theme landing')
       }
 
-      let a = vcom.html.a.class('landing')('hi')
+      let a = vcom.HTML.a.class('landing')('hi')
       vcom.render(a, document.body, { css: obj })
       let el = document.querySelector('a')
       assert.equal(el.className, '_im3wl1 _1nxhvta')
@@ -63,7 +63,7 @@ describe('vcom', function () {
 
   describe('send', function () {
     it('should pass send in', function (done) {
-      let { send, use } = vcom.effects()
+      let { send, use } = vcom.Effects()
 
       use(function (payload, next) {
         assert.deepEqual(payload, {
