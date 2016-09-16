@@ -1,21 +1,25 @@
 
+3.0.3 / 2016-09-16
+==================
+
+  * BREAKING: Stylesheet => CSS
+
 3.0.2 / 2016-09-16
 ==================
 
-  * bump alley
+  * BREAKING: bump alley
 
 3.0.1 / 2016-09-16
 ==================
 
-  * pass in effects directly instead of send
-  * rename Render to render
+  * BREAKING: pass in effects directly instead of send
+  * BREAKING: rename Render to render
 
 3.0.0 / 2016-09-16
 ==================
 
-  * Capitalize all the exports
-  * New API for alley
-  * Socrates now gets a "set" action
+  * BREAKING: Capitalize all the exports
+  * BREAKING: New API for alley
 
 2.0.9 / 2016-09-16
 ==================
