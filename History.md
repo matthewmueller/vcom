@@ -1,4 +1,10 @@
 
+4.0.0 / 2016-09-19
+==================
+
+  * update deps
+  * BREAKING: socrates key change. see matthewmueller/socrates
+
 3.0.3 / 2016-09-16
 ==================
 
