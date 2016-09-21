@@ -13,7 +13,7 @@
   "repository": "MatthewMueller/vcom",
   "dependencies": {
     "afro": "3.0.0",
-    "alley": "2.0.1",
+    "alley": "2.0.2",
     "preact": "6.0.2",
     "socrates": "4.0.0",
     "sun": "1.0.7"
@@ -44,7 +44,7 @@
     "minify": "uglifyjs $npm_package_main -cm -o $npm_package_minified_main -p relative --in-source-map ${npm_package_main}.map --source-map ${npm_package_minified_main}.map",
     "example:browser": "beefy examples/client.js --live --open",
     "disc": "browserify -t [ bubleify ] --full-paths index.js | discify --open",
-    "example:server": "node examples/server.js",
+    "example": "budo example.js --open --live -- -t [ bubleify ]",
     "test": "devtool node_modules/mocha/bin/_mocha -qc -- test/vcom.js",
     "prepublish": "npm run build",
     "lint": "snazzy",
