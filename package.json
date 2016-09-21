@@ -16,7 +16,7 @@
     "alley": "2.0.1",
     "preact": "6.0.2",
     "socrates": "4.0.0",
-    "sun": "1.0.6"
+    "sun": "1.0.7"
   },
   "devDependencies": {
     "babel-eslint": "6.1.2",
