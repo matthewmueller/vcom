@@ -6,6 +6,7 @@ const Socrates = require('socrates')
 const Stylesheet = require('afro')
 const Effects = require('alley')
 const preact = require('preact')
+const rsplit = /\.?([^\s]+)/g
 const sun = require('sun')
 
 /**
@@ -102,7 +103,9 @@ function Styles (css) {
   return function styles (node) {
     let attrs = node.attributes
     if (!attrs || !attrs.class) return node
-    attrs.class = css(attrs.class) || attrs.class
+    attrs.class = selectors(attrs.class)
+      .map(cls => css[cls] || cls)
+      .join(' ')
     return node
   }
 }
@@ -134,4 +137,14 @@ function walk (vnode, fn) {
   if (!vnode.children) return vnode
   vnode.children.map(child => walk(child, fn))
   return vnode
+}
+
+/**
+ * Split into separate selectors
+ */
+
+function selectors (selectors) {
+  const arr = []
+  selectors.replace(rsplit, (m, s) => arr.push(s))
+  return arr.filter(selector => !!selector)
 }

@@ -51,7 +51,7 @@ describe('vcom', function () {
       `)
 
       let obj = {
-        landing: css('theme landing')
+        landing: `${css.theme} ${css.landing}`
       }
 
       let a = vcom.HTML.a.class('landing')('hi')
