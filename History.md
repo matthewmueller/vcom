@@ -1,4 +1,9 @@
 
+5.0.0 / 2016-09-21
+==================
+
+  * vcom.CSS(...) used to inject views with css, with vcom.Stylesheet is an alias for Afro
+
 4.0.1 / 2016-09-21
 ==================
 
