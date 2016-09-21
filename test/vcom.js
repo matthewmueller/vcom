@@ -2,8 +2,8 @@
  * Module Dependencies
  */
 
-let vcom = require('../index.js')
-let assert = require('assert')
+const vcom = require('../index.js')
+const assert = require('assert')
 
 /**
  * Tests
@@ -16,8 +16,8 @@ describe('vcom', function () {
     assert.ok(vcom.CSS)
   })
 
-  it('should check that css is a function', function () {
-    let css = vcom.CSS(`
+  it('should check stylesheet is afro', function () {
+    let css = vcom.Stylesheet(`
       .landing { background: blue; }
     `)
 
@@ -33,7 +33,7 @@ describe('vcom', function () {
 
   describe('CSS', function () {
     it('should support passing a function in', function () {
-      let css = vcom.CSS(`
+      let css = vcom.Stylesheet(`
         .theme { color: red; }
         .landing { background: blue; }
       `)
@@ -44,18 +44,17 @@ describe('vcom', function () {
       assert.equal(el.className, '_im3wl1 _1nxhvta')
     })
 
-    it('should support passing an object in', function () {
+    it('should support rewriting render functions', function () {
       let css = vcom.CSS(`
         .theme { color: red; }
         .landing { background: blue; }
       `)
 
-      let obj = {
-        landing: `${css.theme} ${css.landing}`
+      function render (props) {
+        return vcom.HTML.a.class('theme landing')('hi')
       }
 
-      let a = vcom.HTML.a.class('landing')('hi')
-      vcom.render(a, document.body, { css: obj })
+      vcom.render(css(render), document.body)
       let el = document.querySelector('a')
       assert.equal(el.className, '_im3wl1 _1nxhvta')
     })

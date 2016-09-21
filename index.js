@@ -32,7 +32,7 @@ vcom.HTML = sun
  * Attach CSS
  */
 
-vcom.CSS = Stylesheet
+vcom.CSS = CSS
 
 /**
  * Store
@@ -47,6 +47,12 @@ vcom.Store = Socrates
 vcom.Effects = Effects
 
 /**
+ * Stylesheet
+ */
+
+vcom.Stylesheet = Stylesheet
+
+/**
  * Render
  */
 
@@ -56,7 +62,7 @@ vcom.render = Render
  * Render
  */
 
-function Render (renderable, parent, { effects, store, css }) {
+function Render (renderable, parent, { effects, store, css } = {}) {
   let styles = typeof css === 'object' ? (key) => css[key] : css
   let transform = Transform({ css: styles, effects })
   let root = null
@@ -77,6 +83,35 @@ function Render (renderable, parent, { effects, store, css }) {
   }
 
   return render()
+}
+
+/**
+ * CSS transform
+ */
+
+function CSS () {
+  let sheet = Stylesheet.apply(null, arguments)
+  return function css (render) {
+    if (typeof render === 'function') {
+      return Stylize(render, sheet)
+    } else {
+      sheet = sheet.apply(null, arguments)
+      return css
+    }
+  }
+}
+
+/**
+ * Stylize the render
+ */
+
+function Stylize (Render, css) {
+  const styles = Styles(css)
+  return function render () {
+    const vnodes = Render.apply(Render, arguments)
+    if (!vnodes) return vnodes
+    return walk(vnodes, node => styles(node))
+  }
 }
 
 /**
