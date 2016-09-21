@@ -1,4 +1,9 @@
 
+4.0.1 / 2016-09-21
+==================
+
+  * bump afro and fix internal class to hash renaming
+
 4.0.0 / 2016-09-19
 ==================
 
