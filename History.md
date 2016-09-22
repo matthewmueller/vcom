@@ -1,4 +1,11 @@
 
+5.0.3 / 2016-09-22
+==================
+
+  * ensure that latest sun is present in the build
+  * bump dep, update example, fix circle
+  * bump package
+
 5.0.2 / 2016-09-21
 ==================
 
