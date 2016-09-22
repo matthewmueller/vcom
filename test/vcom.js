@@ -4,6 +4,7 @@
 
 const vcom = require('../index.js')
 const assert = require('assert')
+const { h } = require('preact')
 
 /**
  * Tests
@@ -24,11 +25,24 @@ describe('vcom', function () {
     assert.equal(css(), '._1nxhvta { background: blue; }')
   })
 
-  it('should ensure that the HTML attributes are attached', function () {
-    assert.ok(vcom.HTML.div)
-    assert.ok(vcom.HTML.span)
-    assert.ok(vcom.HTML.h1)
-    assert.ok(vcom.HTML.a)
+  describe('HTML', () => {
+    it('should ensure that the HTML attributes are attached', function () {
+      assert.ok(vcom.HTML.div)
+      assert.ok(vcom.HTML.span)
+      assert.ok(vcom.HTML.h1)
+      assert.ok(vcom.HTML.a)
+    })
+
+    it('should work vnode children', () => {
+      let d = vcom.HTML.div([
+        h('h2', { class: 'blue' }, [
+          h('strong', {}, [
+            'hi there!'
+          ])
+        ])
+      ])
+      assert.equal(r(d), '<div><h2 class="blue"><strong>hi there!</strong></h2></div>')
+    })
   })
 
   describe('CSS', function () {
@@ -82,3 +96,9 @@ describe('vcom', function () {
     })
   })
 })
+
+function r (v) {
+  document.body.innerHTML = ''
+  vcom.render(v, document.body)
+  return document.body.innerHTML
+}
