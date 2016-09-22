@@ -6,27 +6,45 @@
 ## Example
 
 ```js
-let { CSS, div, h1, style } = require('vcom')
-let { render } = require('preact')
+/**
+ * Modules
+ */
 
-let css = CSS(`
-  header {
-    background: skyblue;
-  }
+const { HTML, CSS, render } = require('./dist/vcom.js')
 
-  header:hover {
-    background: yellow
+/**
+ * Styles
+ */
+
+const css = CSS(`
+  .box {
+    text-align: center;
+    font-size: 10rem;
+    background: blue;
+    padding: 50px;
+    color: white;
   }
 `)
 
-const App = ({ name }) => (
-  div.class('app')(
-    style.type('text/css')(css),
-    h1.class(css.header)(`hi ${name}!`)
-  )
+/**
+ * HTML
+ */
+
+const { div } = HTML
+
+/**
+ * Render
+ */
+
+const App = (props) => (
+  div.class('box')('welcome')
 )
 
-render(App({ name: 'Matt' }), document.body)
+/**
+ * Render to DOM
+ */
+
+render(css(App), document.body)
 ```
 
 ## Installation
