@@ -1,4 +1,9 @@
 
+6.0.0 / 2016-09-23
+==================
+
+  * Switch main to the entry instead of the distribution
+
 5.0.3 / 2016-09-22
 ==================
 
