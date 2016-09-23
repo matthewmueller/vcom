@@ -40,8 +40,8 @@
   "minified:main": "dist/vcom.min.js",
   "scripts": {
     "build": "npm run -s transpile && npm run -s minify",
-    "transpile": "rollup -c rollup.config.js -f umd -n $npm_package_name -m -o $npm_package_main index.js",
-    "minify": "uglifyjs $npm_package_main -cm -o $npm_package_minified_main -p relative --in-source-map ${npm_package_main}.map --source-map ${npm_package_minified_main}.map",
+    "transpile": "rollup -c rollup.config.js -f umd -n $npm_package_name -m -o dist/vcom.js index.js",
+    "minify": "uglifyjs dist/vcom.js -cm -o $npm_package_minified_main -p relative --in-source-map dist/vcom.js.map --source-map ${npm_package_minified_main}.map",
     "example:browser": "beefy examples/client.js --live --open",
     "disc": "browserify -t [ bubleify ] --full-paths index.js | discify --open",
     "example": "budo example.js --open --live -- -t [ bubleify ]",
