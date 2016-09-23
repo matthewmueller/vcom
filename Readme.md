@@ -3,6 +3,8 @@
 
   Everything you need to create functional, virtual [Preact](https://github.com/developit/preact) Components with CSS, HTML, and JS.
 
+  > Note: if you want to use this standalone, please use dist/vcom.js. Otherwise you'll want to use babel with es2015 or buble to transpile this in your application, either as a global transform or after the build step.
+
 ## Example
 
 ```js
