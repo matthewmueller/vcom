@@ -36,7 +36,7 @@
     "snazzy": "5.0.0",
     "uglifyjs": "2.4.10"
   },
-  "main": "dist/vcom.js",
+  "main": "index.js",
   "minified:main": "dist/vcom.min.js",
   "scripts": {
     "build": "npm run -s transpile && npm run -s minify",
