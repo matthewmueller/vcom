@@ -72,6 +72,21 @@ describe('vcom', function () {
       let el = document.querySelector('a')
       assert.equal(el.className, '_im3wl1 _1nxhvta')
     })
+
+    it('should support passing direct vnodes in', () => {
+      let css = vcom.CSS(`
+        .theme { color: red; }
+        .landing { background: blue; }
+      `)
+
+      function render (props) {
+        return vcom.HTML.a.class('theme landing')('hi')
+      }
+
+      vcom.render(css(render({})), document.body)
+      let el = document.querySelector('a')
+      assert.equal(el.className, '_im3wl1 _1nxhvta')
+    })
   })
 
   describe('send', function () {

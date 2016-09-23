@@ -96,6 +96,9 @@ function CSS () {
   return function css (render) {
     if (typeof render === 'function') {
       return Stylize(render, sheet)
+    } else if (render.nodeName) {
+      const styles = Styles(sheet)
+      return walk(render, node => styles(node))
     } else {
       sheet = sheet.apply(null, arguments)
       return css
