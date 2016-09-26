@@ -1,4 +1,11 @@
 
+6.0.3 / 2016-09-26
+==================
+
+  * bump sun
+  * use a peer dependency for preact
+  * update readme
+
 6.0.2 / 2016-09-23
 ==================
 
