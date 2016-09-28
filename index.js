@@ -64,10 +64,9 @@ vcom.render = Render
  * Render
  */
 
-function Render (renderable, parent, { effects, store, css } = {}) {
+function Render (renderable, parent, { effects, store, css, root } = {}) {
   let styles = typeof css === 'object' ? (key) => css[key] : css
   let transform = Transform({ css: styles, effects })
-  let root = null
 
   function render () {
     let state = typeof store === 'function' ? store() : store
@@ -94,7 +93,9 @@ function Render (renderable, parent, { effects, store, css } = {}) {
 function CSS () {
   let sheet = Stylesheet.apply(null, arguments)
   return function css (render) {
-    if (typeof render === 'function') {
+    if (!arguments.length) {
+      return sheet.apply(null, arguments)
+    } else if (typeof render === 'function') {
       return Stylize(render, sheet)
     } else if (render.nodeName) {
       const styles = Styles(sheet)

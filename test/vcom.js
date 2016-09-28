@@ -87,6 +87,16 @@ describe('vcom', function () {
       let el = document.querySelector('a')
       assert.equal(el.className, '_im3wl1 _1nxhvta')
     })
+
+    it('should write out CSS when there are no arguments', () => {
+      let css = vcom.CSS(`
+        .theme { color: red; }
+        .landing { background: blue; }
+      `)
+
+      assert.equal(css(), `._im3wl1 { color: red; }
+._1nxhvta { background: blue; }`)
+    })
   })
 
   describe('send', function () {
@@ -107,6 +117,46 @@ describe('vcom', function () {
         assert.equal(e.type, 'click')
         send('hi')
       }
+      document.querySelector('button').click()
+    })
+  })
+
+  describe('server-side rendering', () => {
+    it('should render both as as string and to dom', (done) => {
+      const string = require('preact-render-to-string')
+      const { CSS, HTML, render } = require('..')
+      const { div, style, button } = HTML
+
+      const css = CSS(`
+        .header {
+          background: skyblue;
+        }
+
+        .header:hover {
+          background: yellow
+        }
+      `)
+
+      const App = ({ name }) => (
+        div.class('app')(
+          style.type('text/css')(css()),
+          button.class('header').onClick(e => done())(`hi ${name}!`)
+        )
+      )
+
+      const html = string(css(App({ name: 'Matt' })))
+      document.body.innerHTML = html
+
+      assert.equal(document.body.innerHTML, `<div class="app"><style type="text/css">._i2392t { background: skyblue; }
+._i2392t:hover { background: yellow; }</style><button class="_i2392t">hi Matt!</button></div>`)
+
+      render(css(App({ name: 'Mark' })), document.body, {
+        root: document.body.lastChild
+      })
+
+      assert.equal(document.body.innerHTML, `<div class="app"><style type="text/css">._i2392t { background: skyblue; }
+._i2392t:hover { background: yellow; }</style><button class="_i2392t">hi Mark!</button></div>`)
+
       document.querySelector('button').click()
     })
   })

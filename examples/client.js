@@ -3,23 +3,24 @@
  */
 
 let { render } = require('preact')
-let { CSS, div, h1, style } = require('..')
+let { CSS, HTML } = require('..')
+let { div, h1, style } = HTML
 
 let css = CSS(`
-  header {
+  .header {
     background: skyblue;
   }
 
-  header:hover {
+  .header:hover {
     background: yellow
   }
 `)
 
 const App = ({ name }) => (
   div.class('app')(
-    style.type('text/css')(css),
-    h1.class(css.header)(`hi ${name}!`)
+    style.type('text/css')(css()),
+    h1.class('header')(`hi ${name}!`)
   )
 )
 
-render(App({ name: 'Matt' }), document.body)
+render(css(App({ name: 'Matt' })), document.body)
