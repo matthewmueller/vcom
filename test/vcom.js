@@ -160,10 +160,85 @@ describe('vcom', function () {
       document.querySelector('button').click()
     })
   })
+
+  describe('mounts', () => {
+    it('should mount and unmount', (done) => {
+      let mounted = 0
+      let unmounted = 0
+      let i = 1
+
+      const App = ({ name } = {}) => (
+        vcom.HTML.div(
+          (i > 0 || i <= -1) && vcom.HTML.h1({ onMount: mount, onUnmount: unmount }).class('header')(`hi ${name}!`)
+        )
+      )
+
+      function mount (el, send) {
+        mounted++
+        assert.equal(el.nodeName, 'H1')
+      }
+
+      function unmount (el, send) {
+        unmounted++
+        assert.equal(el.nodeName, 'H1')
+      }
+
+      render(App())
+      render(App())
+      render(App())
+      render(App())
+      assert.equal(mounted, 3)
+      assert.equal(unmounted, 1)
+      done()
+
+      function render (component) {
+        vcom.render(component, document.body)
+        i--
+      }
+    })
+
+    it('should pass send through when effects are present', (done) => {
+      let effects = vcom.Effects()
+      let mounted = 0
+      let unmounted = 0
+      let i = 1
+
+      const App = ({ name } = {}) => (
+        vcom.HTML.div(
+          (i > 0 || i <= -1) && vcom.HTML.h1({ onMount: mount, onUnmount: unmount }).class('header')(`hi ${name}!`)
+        )
+      )
+
+      function mount (el, send) {
+        mounted++
+        assert.equal(el.nodeName, 'H1')
+        assert.equal(typeof send, 'function')
+      }
+
+      function unmount (el, send) {
+        unmounted++
+        assert.equal(el.nodeName, 'H1')
+        assert.equal(typeof send, 'function')
+      }
+
+      render(App())
+      render(App())
+      render(App())
+      render(App())
+      assert.equal(mounted, 3)
+      assert.equal(unmounted, 1)
+      done()
+
+      function render (component) {
+        vcom.render(component, document.body, { effects })
+        i--
+      }
+    })
+  })
 })
 
 function r (v) {
   document.body.innerHTML = ''
-  vcom.render(v, document.body)
+  vcom.render(v, document.body, { root: document.body.lastChild })
   return document.body.innerHTML
 }

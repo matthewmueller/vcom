@@ -65,6 +65,8 @@ vcom.render = Render
  */
 
 function Render (renderable, parent, { effects, store, css, root } = {}) {
+  root = root || parent.lastChild
+
   let styles = typeof css === 'object' ? (key) => css[key] : css
   let transform = Transform({ css: styles, effects })
 
@@ -127,8 +129,10 @@ function Stylize (Render, css) {
 function Transform ({ css, effects }) {
   let actions = Actions(effects)
   let styles = Styles(css)
+  let mounts = Mounts()
   return function transform (vnode) {
     return walk(vnode, node => {
+      mounts(node)
       if (css) styles(node)
       if (effects) actions(node)
       return node
@@ -165,6 +169,28 @@ function Actions (effects) {
       attrs[attr] = (e) => fn(e, effects.send)
     }
     return node
+  }
+}
+
+/**
+ * Mounts
+ */
+
+function Mounts () {
+  return function mounts (node) {
+    let attrs = node.attributes
+    if (!attrs) return
+    else if (!attrs.onMount && !attrs.onUnmount) return
+
+    // create a mount using the ref
+    let ref = node.attributes && node.attributes.ref
+    let inst = null
+
+    node.attributes.ref = (el, send) => {
+      if (inst && attrs.onUnmount) attrs.onUnmount(inst, send)
+      if ((inst = el) && attrs.onMount) attrs.onMount(inst, send)
+      if (ref) ref(el, send)
+    }
   }
 }
 

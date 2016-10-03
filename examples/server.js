@@ -3,7 +3,8 @@
  */
 
 let render = require('preact-render-to-string')
-let { CSS, div, h1, style } = require('..')
+let { CSS, HTML } = require('..')
+let { div, h1, style } = HTML
 
 let css = CSS(`
   header {
@@ -17,7 +18,7 @@ let css = CSS(`
 
 const App = ({ name }) => (
   div.class('app')(
-    style.type('text/css')(css),
+    style.type('text/css')(css()),
     h1.class(css.header)(`hi ${name}!`)
   )
 )
