@@ -1,4 +1,10 @@
 
+6.0.7 / 2016-10-06
+==================
+
+  * fix onMount and onUnmount to only fire when
+    the element is added and removed
+
 6.0.6 / 2016-10-03
 ==================
 
