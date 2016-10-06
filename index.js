@@ -65,10 +65,10 @@ vcom.render = Render
  */
 
 function Render (renderable, parent, { effects, store, css, root } = {}) {
-  root = root || parent.lastChild
-
   let styles = typeof css === 'object' ? (key) => css[key] : css
-  let transform = Transform({ css: styles, effects })
+  let transform = Transform({ css: styles, effects, rehydrating: !!root })
+
+  root = root || parent.lastChild
 
   function render () {
     let state = typeof store === 'function' ? store() : store
@@ -126,10 +126,10 @@ function Stylize (Render, css) {
  * Transform vnodes
  */
 
-function Transform ({ css, effects }) {
+function Transform ({ css, effects, rehydrating }) {
   let actions = Actions(effects)
   let styles = Styles(css)
-  let mounts = Mounts()
+  let mounts = Mounts({ rehydrating })
   return function transform (vnode) {
     return walk(vnode, node => {
       mounts(node)
@@ -176,7 +176,12 @@ function Actions (effects) {
  * Mounts
  */
 
-function Mounts () {
+function Mounts ({ rehydrating }) {
+  // if we're rehydrating from the
+  // server, we'll want to run hooks
+  // at least once on the client
+  let firstMount = rehydrating
+
   return function mounts (node) {
     let attrs = node.attributes
     if (!attrs) return
@@ -184,12 +189,23 @@ function Mounts () {
 
     // create a mount using the ref
     let ref = node.attributes && node.attributes.ref
-    let inst = null
-
     node.attributes.ref = (el, send) => {
-      if (inst && attrs.onUnmount) attrs.onUnmount(inst, send)
-      if ((inst = el) && attrs.onMount) attrs.onMount(inst, send)
-      if (ref) ref(el, send)
+      const parent = el && el.parentNode
+      if (attrs.onMount && el && (!parent || firstMount)) {
+        firstMount = false
+        // when initially mounted, el will
+        // exist but there won't be a parent
+        // we want to defer to ensure that
+        // the dimensions have been calculated
+        defer(function () { attrs.onMount(el, send) })
+      } else if (attrs.onUnmount && !el && !parent) {
+        // when unmounting, both el and
+        // the parent will be null.
+        defer(function () { attrs.onUnmount(null, send) })
+      }
+
+      // call original ref, if there is one
+      ref && ref(el, send)
     }
   }
 }

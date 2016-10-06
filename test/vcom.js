@@ -163,6 +163,8 @@ describe('vcom', function () {
 
   describe('mounts', () => {
     it('should mount and unmount', (done) => {
+      document.body.innerHTML = ''
+
       let mounted = 0
       let unmounted = 0
       let i = 1
@@ -187,17 +189,25 @@ describe('vcom', function () {
       render(App())
       render(App())
       render(App())
-      assert.equal(mounted, 3)
-      assert.equal(unmounted, 1)
-      done()
+
+      // since we're deferring to allow
+      // the dimensions to exist we need
+      // to wait to check
+      setTimeout(function () {
+        assert.equal(mounted, 2)
+        assert.equal(unmounted, 1)
+        done()
+      }, 30)
 
       function render (component) {
-        vcom.render(component, document.body)
         i--
+        return vcom.render(component, document.body)
       }
     })
 
     it('should pass send through when effects are present', (done) => {
+      document.body.innerHTML = ''
+
       let effects = vcom.Effects()
       let mounted = 0
       let unmounted = 0
@@ -225,13 +235,64 @@ describe('vcom', function () {
       render(App())
       render(App())
       render(App())
-      assert.equal(mounted, 3)
-      assert.equal(unmounted, 1)
-      done()
+
+      // since we're deferring to allow
+      // the dimensions to exist we need
+      // to wait to check
+      setTimeout(function () {
+        assert.equal(mounted, 2)
+        assert.equal(unmounted, 1)
+        done()
+      }, 100)
 
       function render (component) {
         vcom.render(component, document.body, { effects })
         i--
+      }
+    })
+
+    it('should be consistent even if there was already HTML there (from server)', (done) => {
+      document.body.innerHTML = '<div><h1 class="header">hi undefined!</h1></div>'
+
+      let mounted = 0
+      let unmounted = 0
+      let i = 1
+
+      const App = ({ name } = {}) => (
+        vcom.HTML.div(
+          (i > 0 || i <= -1) && vcom.HTML.h1({ onMount: mount, onUnmount: unmount }).class('header')(`hi ${name}!`)
+        )
+      )
+
+      function mount (el, send) {
+        mounted++
+        assert.equal(el.nodeName, 'H1')
+      }
+
+      function unmount (el, send) {
+        unmounted++
+        assert.equal(el.nodeName, 'H1')
+      }
+
+      // first one apply a root since it's
+      // overwriting existing HTML
+      render(App(), document.body.lastChild)
+      render(App())
+      render(App())
+      render(App())
+
+      // since we're deferring to allow
+      // the dimensions to exist we need
+      // to wait to check
+      setTimeout(function () {
+        assert.equal(mounted, 2)
+        assert.equal(unmounted, 1)
+        done()
+      }, 30)
+
+      function render (component, root) {
+        i--
+        return vcom.render(component, document.body, { root })
       }
     })
   })

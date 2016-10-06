@@ -2,9 +2,10 @@
  * Module Dependencies
  */
 
-let { CSS, HTML, render, Effects } = require('..')
+let { CSS, HTML, render, Effects, Store } = require('..')
 let { div, h1, style } = HTML
 let effects = Effects()
+let store = Store()
 
 let css = CSS(`
   .header {
@@ -18,7 +19,7 @@ let css = CSS(`
 
 var i = 5
 const App = ({ name }) => (
-  div.class('app')(
+  div.class('app').onClick((e, send) => console.log('cliked!'))(
     style.type('text/css')(css()),
     (i > 0 || i < -5) && h1({ onMount: mount, onUnmount: unmount }).class('header')(`hi ${name}!`)
   )
@@ -28,7 +29,8 @@ setInterval(function () {
   i--
   render(css(App({ name: 'Matt' })), document.body, {
     root: document.body.lastChild,
-    effects
+    effects,
+    store
   })
 }, 500)
 
