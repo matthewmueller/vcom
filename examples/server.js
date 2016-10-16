@@ -17,16 +17,11 @@ let css = CSS(`
 `)
 
 const App = ({ name }) => (
-  body()
   div.class('app')(
     style.type('text/css')(css()),
     h1.class(css.header)(`hi ${name}!`)
   )
 )
-
-function body () {
-
-}
 
 let html = render(App({ name: 'Matt' }))
 console.log(html)
