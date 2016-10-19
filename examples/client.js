@@ -8,8 +8,8 @@ let store = Store()
 
 const App = ({ url }) => (
   div.class('app').onMount(load).onUnmount(unload).onClick(route)(
-    url === '/' && h1({ key: 'a' }).onMount(root).onUnmount(unroot)(`${url}`),
-    url === '/name' && h1({ key: 'b' }).onMount(name).onUnmount(unname)(`${url}`),
+    url === '/' && h1.key('/').onMount(root).onUnmount(unroot)(`${url}`),
+    url === '/name' && h1.key('name').onMount(name).onUnmount(unname)(`${url}`),
     h1.onMount(consistent).onUnmount(unconsistent)('consistent')
   )
 )
